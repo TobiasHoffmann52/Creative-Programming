@@ -3,14 +3,22 @@ let trees = [];
 
 let textArray = [];
 let showGenerating = false;
-let lastDotFrame=0;
-let startDotFrame=0;
-let circle_x=150;
-let circle_y=400;
-let circle_diam=200;
+let lastDotFrame = 0;
+let startDotFrame = 0;
+let circle_x = 150;
+let circle_y = 400;
+let circle_diam = 200;
 
 let textX = 100;
 let textY = 400;
+
+let bliss;
+
+
+function preload() {
+  bliss = loadImage('assets/bliss.jpg');
+
+}
 
 function setup() {
   createCanvas(1500, 800);
@@ -28,9 +36,12 @@ function draw() {
   fill(87, 166, 3);
   rect(0, height*1/3, width, height*2/3);
 
+
+  image(bliss, 0, 0, width, height);
+
   writeScore(20, 20);
 
-  for (let i = trees.length-1; i >= 0; i--) {
+  for (let i = trees.length - 1; i >= 0; i--) {
     trees[i].show();
   }
 
@@ -46,18 +57,18 @@ function draw() {
 
   if (showGenerating) {
     fillGradient('radial', {
-    from :
-      [circle_x, circle_y, 0], // x, y, radius
-      to :
-      [circle_x, circle_y, circle_diam], // x, y, radius
-      steps :
-      [
-        color(128 + 100 * sin(frameCount * 0.03), 0, 128 + 100 * sin(frameCount * 0.03)),
-        color(128 + 50 * sin(frameCount * 0.03), 0, 128 + 50 * sin(frameCount * 0.03)),
-        color(128 + 10 * sin(frameCount * 0.03), 0, 128 + 10 * sin(frameCount * 0.03)),
-        color(128, 0, 128),
-        //          color(0, 96, 164),
-        //          color()
+      from:
+        [circle_x, circle_y, 0], // x, y, radius
+      to:
+        [circle_x, circle_y, circle_diam], // x, y, radius
+      steps:
+        [
+          color(128 + 100 * sin(frameCount * 0.03), 0, 128 + 100 * sin(frameCount * 0.03)),
+          color(128 + 50 * sin(frameCount * 0.03), 0, 128 + 50 * sin(frameCount * 0.03)),
+          color(128 + 10 * sin(frameCount * 0.03), 0, 128 + 10 * sin(frameCount * 0.03)),
+          color(128, 0, 128),
+          //          color(0, 96, 164),
+          //          color()
         ] // Array of p5.color objects or arrays containing [p5.color Object, Color Stop (0 to 1)]
     }
     );
@@ -66,12 +77,12 @@ function draw() {
 
 
   // searchbar rect
-  stroke(128, 0, 128, 255-glow);
-  fill (253);
+  stroke(128, 0, 128, 255 - glow);
+  fill(253);
   stroke(0, 0, 0);
-  rect (50, 550, 200, 50, 10);
+  rect(50, 550, 200, 50, 10);
   let combinedText = join(textArray, '');
-  fill (0);
+  fill(0);
 
   // "!" betyder "ikke/not"
   if (!showGenerating) {
@@ -85,7 +96,7 @@ function draw() {
 }
 
 function mouseClicked() {
-  if (mouseY > (height*1/3)) {
+  if (mouseY > (height * 1 / 3)) {
     let newTree = new Tree(mouseX, mouseY);
     trees.push(newTree);
   }
@@ -94,7 +105,7 @@ function mouseClicked() {
 function keyPressed() {
 
   if (keyCode == 8) { //length er længden på arrayet, ved at -1, kan man slette det sidste index i sin tekst
-    textArray.splice(textArray.length-1, 1);
+    textArray.splice(textArray.length - 1, 1);
   }
 
   // "eller" er "||" i en if statement
@@ -127,7 +138,7 @@ function writeScore(x, y) {
 
 function calculateScore() {
   score = 0 - (trees.length * 10);
-  score = score + frameCount/50;
+  score = score + frameCount / 50;
 }
 
 function generating() {
