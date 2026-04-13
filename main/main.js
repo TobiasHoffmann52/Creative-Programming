@@ -5,9 +5,6 @@ let textArray = [];
 let showGenerating = false;
 let lastDotFrame = 0;
 let startDotFrame = 0;
-let circle_x = 150;
-let circle_y = 400;
-let circle_diam = 200;
 
 let textX = 100;
 let textY = 400;
@@ -17,7 +14,6 @@ let bliss;
 
 function preload() {
   bliss = loadImage('assets/bliss.jpg');
-
 }
 
 function setup() {
@@ -31,10 +27,6 @@ function draw() {
   clear();
   background(120);
 
-  fill(25, 209, 250);
-  rect(0, 0, width, height*1/3);
-  fill(87, 166, 3);
-  rect(0, height*1/3, width, height*2/3);
 
 
   image(bliss, 0, 0, width, height);
@@ -47,52 +39,17 @@ function draw() {
 
   calculateScore();
 
-  let glow = 255;
-  if (showGenerating) { // hvis "enter" bliver trykket på vil cirklen begynde at "glow"
-    glow = 100 + 40 * sin(frameCount * 0.03); // Sin is used for pulsing - glow er et tal imellem 60 og 140
-  }
-  //circle
-  noStroke();
-  fill(128, 0, 128, glow);
-
-  if (showGenerating) {
-    fillGradient('radial', {
-      from:
-        [circle_x, circle_y, 0], // x, y, radius
-      to:
-        [circle_x, circle_y, circle_diam], // x, y, radius
-      steps:
-        [
-          color(128 + 100 * sin(frameCount * 0.03), 0, 128 + 100 * sin(frameCount * 0.03)),
-          color(128 + 50 * sin(frameCount * 0.03), 0, 128 + 50 * sin(frameCount * 0.03)),
-          color(128 + 10 * sin(frameCount * 0.03), 0, 128 + 10 * sin(frameCount * 0.03)),
-          color(128, 0, 128),
-          //          color(0, 96, 164),
-          //          color()
-        ] // Array of p5.color objects or arrays containing [p5.color Object, Color Stop (0 to 1)]
-    }
-    );
-  }
-  circle(circle_x, circle_y, circle_diam, glow);
-
-
   // searchbar rect
-  stroke(128, 0, 128, 255 - glow);
   fill(253);
   stroke(0, 0, 0);
-  rect(50, 550, 200, 50, 10);
+  rect(550, 200, 600, 500, 10);
   let combinedText = join(textArray, '');
   fill(0);
 
-  // "!" betyder "ikke/not"
-  if (!showGenerating) {
-  }
+
   textSize(15);
   noStroke();
-  text(combinedText, 60, 575);
-  if (showGenerating) {
-    generating();
-  }
+  text(combinedText, 560, 575);
 }
 
 function mouseClicked() {
@@ -102,24 +59,7 @@ function mouseClicked() {
   }
 }
 
-function keyPressed() {
 
-  if (keyCode == 8) { //length er længden på arrayet, ved at -1, kan man slette det sidste index i sin tekst
-    textArray.splice(textArray.length - 1, 1);
-  }
-
-  // "eller" er "||" i en if statement
-  if (keyCode <= 90 && keyCode >= 65 || keyCode == 32) {
-    if (textArray.length < 30) { // begrænsning på hvormange bogstaver der kan skrives
-      textArray.push(key);
-    }
-  }
-  if (keyCode == 13) {
-    showGenerating = true;
-    startDotFrame = frameCount;
-  }
-  //console.log(textArray.length);
-} // keyPressed()
 
 
 function writeScore(x, y) {
