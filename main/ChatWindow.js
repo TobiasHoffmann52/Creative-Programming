@@ -6,10 +6,18 @@ class ChatWindow {
 
 
   show() {
-    fill("brown");
-    rect(this.x-10, this.y, 20, -70);
-    fill("green");
-    circle(this.x, this.y-60, 40);
+    // ChatWindow
+    fill(253);
+    stroke(0, 0, 0);
+    rect(this.x, this.y, 400, 300, 10);
+    rect(this.x, this.y+250, 400, 50, 10);
+    let combinedText = join(textArray, '');
+    fill(0);
+
+    // Search bar text
+    textSize(15);
+    noStroke();
+    text(combinedText, this.x+10, this.y+280);
   }
 }
 
@@ -26,7 +34,6 @@ function keyPressed() {
     }
   }
   if (keyCode == 13) {
-    showGenerating = true;
     startDotFrame = frameCount;
     textArray.splice(0, textArray.length);
   }
