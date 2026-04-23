@@ -6,6 +6,7 @@ let font;
 let game = new Game();
 let chat = new ChatWindow(400, 100);
 let particles = []; // smoke particles array
+let flowersImg = [];
 
 
 function preload() {
@@ -13,6 +14,10 @@ function preload() {
   robot = loadImage('assets/robot.png');
   answers = loadStrings('/assets/answers.txt');
   font = loadFont('/assets/tahoma.ttf');
+  for (let i = 0; i < 11; i++) {
+    let image = loadImage('/assets/' + str(i) + '.png');
+    flowersImg.push(image);
+  }
 }
 
 function setup() {
@@ -20,27 +25,23 @@ function setup() {
   frameRate(60);
   noStroke();
   textFont(font);
+  
 }
 
 
 function draw() {
   clear();
-  background(120);
-
+  
+  
+  
+  
   game.run();
   chat.show();
-
-
-
   game.writeScore();
 }
 
-function mouseClicked() {
-  if (mouseY > (height * 1 / 3)) {
-    let newTree = new Tree(mouseX, mouseY);
-    trees.push(newTree);
-  }
-}
+
+
 
 
 

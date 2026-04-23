@@ -1,5 +1,5 @@
 var score = 0;
-var trees = [];
+var flowers = [];
 
 class Game {
   contructor() {
@@ -10,8 +10,12 @@ class Game {
     // Displays background image
     image(bliss, 0, 0, width, height);
 
+    // Calculates Y-coordinate for robot
+    var robotx = -20;
+    var roboty = 10 * sin(frameCount * 0.02) + 100;
 
-    let p = new Particle();
+    // Makes smoke particles
+    let p = new Particle(robotx + 85, roboty + 200);
     particles.push(p);
     for (let i = particles.length - 1; i >= 0; i--) {
       particles[i].update();
@@ -20,30 +24,26 @@ class Game {
         // remove this particle
         particles.splice(i, 1);
       } // removes object at position i
-
-
-
-      // Displays Robot and makes him float
-      var roboty = 10 * sin(frameCount * 0.02) + 100;
-      image(robot, 20, roboty, 405*0.7, 488*0.7);
     }
 
-
-
-    // Displays all trees
-    for (let i = trees.length - 1; i >= 0; i--) {
-      trees[i].show();
+    // Displays all flowers
+    for (let i = flowers.length - 1; i >= 0; i--) {
+      flowers[i].show();
     }
 
     if (frameCount % (60*8) == 0) {
-      trees.splice(floor(random(trees.length)), 1);
+      flowers.splice(floor(random(flowers.length)), 1);
     }
+
+    // Displays Robot and makes him float
+
+    image(robot, robotx, roboty, 405*0.7, 488*0.7);
   }
 
   calculateScore() {
     // Calculates the current CO2 emissions
 
-    score = 0 - (trees.length * 10);
+    score = 0 - (flowers.length * 10);
     score = score + frameCount / 50;
   }
 

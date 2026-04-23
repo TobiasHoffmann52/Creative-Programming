@@ -1,9 +1,9 @@
 class Particle {
 
-  constructor() {
+  constructor(x,y) {
     // coordinates for the placement of the smoke
-    this.x = 20;
-    this.y = 345;
+    this.x = x;
+    this.y = y;
     this.vx = random(-2, 2); // x velocity
     this.vy = random(-9, -1); // y velocity
     this.alpha = 235;
