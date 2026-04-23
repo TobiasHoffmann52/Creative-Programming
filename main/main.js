@@ -2,20 +2,24 @@ let textArray = [];
 
 let bliss;
 let robot;
+let font;
 let game = new Game();
-let chat = new ChatWindow(400,300);
+let chat = new ChatWindow(400, 100);
+let particles = []; // smoke particles array
 
 
 function preload() {
   bliss = loadImage('assets/bliss.png');
   robot = loadImage('assets/robot.png');
   answers = loadStrings('/assets/answers.txt');
+  font = loadFont('/assets/tahoma.ttf');
 }
 
 function setup() {
   createCanvas(1024, 768);
   frameRate(60);
   noStroke();
+  textFont(font);
 }
 
 
@@ -26,7 +30,7 @@ function draw() {
   game.run();
   chat.show();
 
-  
+
 
   game.writeScore();
 }

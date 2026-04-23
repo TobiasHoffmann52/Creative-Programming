@@ -7,7 +7,7 @@ class ChatWindow {
 
   show() {
     // ChatWindow
-    fill(253);
+    fill(253,120);
     stroke(0, 0, 0);
     rect(this.x, this.y, 400, 300, 10);
     rect(this.x, this.y+250, 400, 50, 10);
@@ -19,6 +19,31 @@ class ChatWindow {
     noStroke();
     text(combinedText, this.x+10, this.y+280);
   }
+  
+  
+  /*
+  markovLoad() {
+  for (var j = 0; j < answers.length; j++) {
+    var txt = answers[j];
+    for (var i = 0; i <= txt.length - order; i++) {
+      var gram = txt.substring(i, i + order);
+      if (i == 0) {
+        beginnings.push(gram);
+      }
+
+      if (!ngrams[gram]) {
+        ngrams[gram] = [];
+      }
+      ngrams[gram].push(txt.charAt(i + order));
+    }
+  }
+  button = createButton("Generate");
+  button.mousePressed(markovIt);
+
+  console.log(ngrams);
+  
+  
+  }*/
 }
 
 function keyPressed() {
