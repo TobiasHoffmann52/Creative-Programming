@@ -1,6 +1,6 @@
 class Particle {
 
-  constructor(x,y) {
+  constructor(x, y) {
     // coordinates for the placement of the smoke
     this.x = x;
     this.y = y;

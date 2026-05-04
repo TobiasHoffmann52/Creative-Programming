@@ -39,8 +39,10 @@ class Flower {
 
 
 function mouseClicked() {
-  if ((768-mouseY) < (-0.0000000001497 * Math.pow(mouseX,4)) + (0.0000006962403 * Math.pow(mouseX,3)) - (0.0008557573891 * Math.pow(mouseX,2)) + ((0.2494275462201 * mouseX)) + 350) {
-    let newFlower = new Flower(mouseX, mouseY);
-    flowers.push(newFlower);
+  if (gameStarted) {
+    if ((768-mouseY) < (-0.0000000001497 * Math.pow(mouseX, 4)) + (0.0000006962403 * Math.pow(mouseX, 3)) - (0.0008557573891 * Math.pow(mouseX, 2)) + ((0.2494275462201 * mouseX)) + 350 && mouseY < height-40) {
+      let newFlower = new Flower(mouseX, mouseY);
+      flowers.push(newFlower);
+    }
   }
 }
