@@ -1,3 +1,6 @@
+let prompt = [];
+let textArray = ["Type here..."];
+
 class ChatWindow {
   constructor(x, y) {
     this.x = x;
@@ -9,41 +12,19 @@ class ChatWindow {
     // ChatWindow
     fill(253, 120);
     stroke(0, 0, 0);
-    //rect(this.x, this.y, 400, 300, 10);
     rect(this.x, this.y, 400, 100, 10);
     let combinedText = join(textArray, '');
     fill(0);
 
     // Search bar text
+    push();
     textSize(15);
     noStroke();
-    text(combinedText, this.x+10, this.y+30);
+    textAlign(LEFT, TOP);
+    text(combinedText, this.x+10, this.y+10, 400-20, 100);
+
+    pop();
   }
-
-
-  /*
-  markovLoad() {
-   for (var j = 0; j < answers.length; j++) {
-   var txt = answers[j];
-   for (var i = 0; i <= txt.length - order; i++) {
-   var gram = txt.substring(i, i + order);
-   if (i == 0) {
-   beginnings.push(gram);
-   }
-   
-   if (!ngrams[gram]) {
-   ngrams[gram] = [];
-   }
-   ngrams[gram].push(txt.charAt(i + order));
-   }
-   }
-   button = createButton("Generate");
-   button.mousePressed(markovIt);
-   
-   console.log(ngrams);
-   
-   
-   }*/
 }
 
 function keyPressed() {
@@ -53,15 +34,21 @@ function keyPressed() {
       textArray.splice(textArray.length - 1, 1);
     }
 
-    // "eller" er "||" i en if statement
-    if (keyCode <= 90 && keyCode >= 65 || keyCode == 32) {
-      if (textArray.length < 34) { // begrænsning på hvormange bogstaver der kan skrives
+
+    if (keyCode <= 90 && keyCode >= 65 || keyCode <= 190 && keyCode >= 187 || keyCode == 32 || keyCode == 49 ) { // "Or" is "||" in an if statement
+      if (textArray.length < 140) { // begrænsning på hvormange bogstaver der kan skrives
         textArray.push(key);
       }
     }
-    if (keyCode == 13) {
+    if (keyCode == 13) { // If Enter is pressed
+      textBoxShown = true;
       startDotFrame = frameCount;
+      prompt.push(textArray.length);
+
       textArray.splice(0, textArray.length);
+
+
+      markovIt();
     }
   }
 

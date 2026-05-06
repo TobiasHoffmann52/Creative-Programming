@@ -1,5 +1,3 @@
-
-
 class Flower {
 
   constructor(x, y) {
@@ -11,6 +9,7 @@ class Flower {
 
   show() {
     push();
+    angleMode(RADIANS);
     let sway = sin(frameCount * 0.05 + this.ImageNumber) * 10;
 
     stroke(0, 100, 0);
@@ -30,7 +29,7 @@ class Flower {
 
     endShape();
 
-    // blomsterhoved
+    // Flowerhead
     imageMode(CENTER);
     image(flowersImg[this.ImageNumber], this.x + sway, this.y - 80, 30, 30);
     pop();
@@ -40,7 +39,13 @@ class Flower {
 
 function mouseClicked() {
   if (gameStarted) {
-    if ((768-mouseY) < (-0.0000000001497 * Math.pow(mouseX, 4)) + (0.0000006962403 * Math.pow(mouseX, 3)) - (0.0008557573891 * Math.pow(mouseX, 2)) + ((0.2494275462201 * mouseX)) + 350 && mouseY < height-40) {
+    if ((768-mouseY) <
+      (-0.0000000001497 * Math.pow(mouseX, 4))
+      + (0.0000006962403 * Math.pow(mouseX, 3))
+      - (0.0008557573891 * Math.pow(mouseX, 2))
+      + ((0.2494275462201 * mouseX))
+      + 350 && mouseY < height-40) { // Makes sure Flowers can only spawn on the grassy area
+
       let newFlower = new Flower(mouseX, mouseY);
       flowers.push(newFlower);
     }

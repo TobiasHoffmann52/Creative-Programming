@@ -1,4 +1,4 @@
-let textArray = [];
+
 let bliss;
 let robot;
 let audioplayer;
@@ -47,13 +47,17 @@ function setup() {
   textAlign(LEFT, CENTER);
   cursor('assets/cursor.png');
 
-  
+
   for (i = 0; i < 25; i++) {
-   let x = random(0, width);
-   let y = random(480, height-40);
-   let newFlower = new Flower(x, y);
-   flowers.push(newFlower);
-   }
+    let x = random(0, width);
+    let y = random(480, height-40);
+    let newFlower = new Flower(x, y);
+    flowers.push(newFlower);
+  }
+
+
+  startScore = floor(random(200, 400));
+  markovLoad();
 }
 
 
@@ -65,6 +69,10 @@ function draw() {
   game.show();
   game.writeScore();
   game.startScreen();
+  
+  
+  
+ 
 }
 
 

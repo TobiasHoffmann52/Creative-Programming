@@ -1,9 +1,12 @@
-var score = 0;
-var flowers = [];
+let score=0;
+let startScore;
+let timeSinceStart;
+let flowers = [];
 let gameStarted = false;
 let robotShown = false;
 let overlayAlpha = 240; //starting point for the overlay transparentsy
-let timeSinceStart;
+let textBoxShown = true;
+
 
 class Game {
   contructor() {
@@ -26,7 +29,7 @@ class Game {
 
     if (!gameStarted) { //'!' means if the game is not started yet
       textSize(50);
-      text('WINDOWS GAME (WIP)', width/2, 200);
+      text('DOORS GAME (WIP)', width/2, 200);
       textSize(20);
       text('PRESS ANY KEY TO START...', width/2, 2 * sin(frameCount * 0.05) + 600);
     }
@@ -99,6 +102,24 @@ class Game {
     image(audioplayer, iconX, 320, 60, 60);
     text('mediaplayer.exe', iconX+30, 390);
 
+    if (frameCount > 60*10 && robotShown == false) { // If user has not discovered the Robot program
+      push();
+      stroke(255);
+      textSize(20);
+      textAlign(LEFT, TOP);
+      angleMode(DEGREES);
+      push();
+      translate(220, 150);
+      rotate(-45);
+
+      line(0, 0, 0, -40);
+      triangle(-5, -40, 0, -50, 5, -40);
+      pop();
+      noStroke();
+      text("Try and press me :)", 220, 150);
+      pop();
+    }
+
     pop();
 
 
@@ -140,19 +161,44 @@ class Game {
     // Displays Robot and makes him float
 
     image(robot, robotx, roboty, robot.width*0.7, robot.height*0.7);
+
+
+    if (textBoxShown) {
+      push();
+      fill(255);
+      noStroke();
+
+      rect(600, 100, 200, 150, 30);
+      triangle(600, 200, 650, 250, 575, roboty+180);
+
+      fill(0);
+      noStroke();
+      textSize(15);
+      textFont(font);
+      textAlign(LEFT, TOP);
+      text(textResult, 620, 120, 150, 100);
+
+      pop();
+    }
   }
 
   calculateScore() {
     // Calculates the current CO2 emissions
     if (gameStarted) {
 
-      score = 0 - (flowers.length * 2.5); // C02 compensation based on the amount of flowers
+      let currentScore = score;
+
+      currentScore = 0 - (flowers.length * 2.5); // C02 compensation based on the amount of flowers
 
       if (frameCount % 60 == 0) { // Adds one every second
         timeSinceStart++;
       }
 
-      score += timeSinceStart; // Passive C02 emission
+      currentScore += timeSinceStart; // Passive C02 emission
+
+      let promptImpact = sum(prompt) * 1.5; // Adds up the amount of characters typed in total
+
+      score = startScore + currentScore + promptImpact; // Final score calculation
 
       if (score < 0 ) { // Score can't go past zero
         score = 0;
@@ -172,4 +218,13 @@ class Game {
 
     pop();
   }
+}
+
+function sum (array) {
+  let num = 0;
+  for (i = 0; i < array.length; i++) {
+    num += array[i];
+  }
+
+  return num;
 }
