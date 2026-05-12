@@ -4,7 +4,7 @@ let timeSinceStart;
 let flowers = [];
 let gameStarted = false;
 let robotShown = false;
-let overlayAlpha = 240; //starting point for the overlay transparentsy
+let overlayAlpha = 220; //starting point for the overlay transparentsy
 let textBoxShown = true;
 
 
@@ -25,7 +25,7 @@ class Game {
 
     fill(255);
 
-    textAlign(CENTER);
+     textAlign(CENTER);
 
     if (!gameStarted) { //'!' means if the game is not started yet
       textSize(50);
