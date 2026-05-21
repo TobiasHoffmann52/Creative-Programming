@@ -1,5 +1,6 @@
 let prompt = [];
 let textArray = ["Type here..."];
+let firstType = true;
 
 class ChatWindow {
   constructor(x, y) {
@@ -36,19 +37,24 @@ function keyPressed() {
 
 
     if (keyCode <= 90 && keyCode >= 65 || keyCode <= 190 && keyCode >= 187 || keyCode == 32 || keyCode == 49 ) { // "Or" is "||" in an if statement
+      if (firstType == true) {
+        textArray.splice(0, textArray.length);
+        firstType = false;
+      }
+
       if (textArray.length < 140) { // begrænsning på hvormange bogstaver der kan skrives
         textArray.push(key);
       }
     }
-    if (keyCode == 13) { // If Enter is pressed
+    if (keyCode == 13 && textArray.length >= 1) { // If Enter is pressed
       textBoxShown = true;
-      startDotFrame = frameCount;
       prompt.push(textArray.length);
 
       textArray.splice(0, textArray.length);
 
-
       markovIt();
+      displayedText = "";
+      charIndex = 0;
     }
   }
 

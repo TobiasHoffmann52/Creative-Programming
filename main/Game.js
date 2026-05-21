@@ -5,8 +5,10 @@ let flowers = [];
 let gameStarted = false;
 let robotShown = false;
 let overlayAlpha = 220; //starting point for the overlay transparentsy
-let textBoxShown = true;
+let textBoxShown = false;
 
+let displayedText = "";
+let charIndex = 0;
 
 class Game {
   contructor() {
@@ -14,6 +16,7 @@ class Game {
 
   startScreen() {
     if (gameStarted) { //Only runs when game has started
+   // logonSound.play();
       if (overlayAlpha > 0) { //If the overlay is higher than 0 keep fading
         overlayAlpha -= 2; //It's fading down with 4 every frame
       }
@@ -25,11 +28,11 @@ class Game {
 
     fill(255);
 
-     textAlign(CENTER);
+    textAlign(CENTER);
 
     if (!gameStarted) { //'!' means if the game is not started yet
       textSize(50);
-      text('DOORS GAME (WIP)', width/2, 200);
+      text('TYPE LESS, PLANT MORE', width/2, 200);
       textSize(20);
       text('PRESS ANY KEY TO START...', width/2, 2 * sin(frameCount * 0.05) + 600);
     }
@@ -176,7 +179,8 @@ class Game {
       textSize(15);
       textFont(font);
       textAlign(LEFT, TOP);
-      text(textResult, 620, 120, 150, 100);
+      typeWriter();
+      text(displayedText, 620, 120, 150, 100);
 
       pop();
     }
@@ -227,4 +231,13 @@ function sum (array) {
   }
 
   return num;
+}
+
+function typeWriter() {
+  if (charIndex < textResult.length) {
+    if (frameCount % 2 == 0) { // controls speed, increase number to slow down
+      displayedText += textResult[charIndex];
+      charIndex++;
+    }
+  }
 }
