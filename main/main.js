@@ -40,7 +40,7 @@ function preload() {
 }
 
 function setup() {
-  createCanvas(1024, 768);
+  createCanvas(1024,768);
   frameRate(60);
   noStroke();
   textFont(font);
@@ -61,6 +61,7 @@ function setup() {
 }
 
 
+
 function draw() {
   clear();
 
@@ -69,10 +70,6 @@ function draw() {
   game.show();
   game.writeScore();
   game.startScreen();
-  
-  
-  
- 
 }
 
 
