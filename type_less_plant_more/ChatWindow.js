@@ -21,8 +21,9 @@ class ChatWindow {
     push();
     textSize(15);
     noStroke();
+ 
     textAlign(LEFT, TOP);
-    text(combinedText, this.x+10, this.y+10, 400-20, 100);
+    text(combinedText, this.x+10, this.y+10, 380, 80);
 
     pop();
   }
@@ -31,7 +32,7 @@ class ChatWindow {
 function keyPressed() {
 
   if (gameStarted && robotShown) {
-    if (keyCode == 8) { //length er længden på arrayet, ved at -1, kan man slette det sidste index i sin tekst
+    if (keyCode == 8) { 
       textArray.splice(textArray.length - 1, 1);
     }
 
@@ -42,7 +43,7 @@ function keyPressed() {
         firstType = false;
       }
 
-      if (textArray.length < 140) { // begrænsning på hvormange bogstaver der kan skrives
+      if (textArray.length < 180) { // Limit on the amount of characters
         textArray.push(key);
       }
     }

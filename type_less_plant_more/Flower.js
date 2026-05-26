@@ -48,6 +48,10 @@ function mouseClicked() {
 
       let newFlower = new Flower(mouseX, mouseY);
       flowers.push(newFlower);
+      
+      let sound = plantSound[floor(random(2))]; // Random plant sound
+      sound.setVolume(0.2); // 20% Volume
+      sound.play();
     }
   }
 }

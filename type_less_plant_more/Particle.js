@@ -10,9 +10,11 @@ class Particle {
     this.size = 1
   }
 
+
   finished() {
     return this.alpha < 0;
   }
+
 
   update() {
     this.x += this.vx;
@@ -20,6 +22,7 @@ class Particle {
     this.alpha -= 7; // when the particles fade out
     this.size += 2;
   }
+
 
   show() {
     noStroke();

@@ -4,6 +4,7 @@ let ngrams = {};
 let beginnings = [];
 let textResult;
 
+
 function markovLoad() {
   for (let j = 0; j < answers.length; j++) {
     let txt = answers[j];

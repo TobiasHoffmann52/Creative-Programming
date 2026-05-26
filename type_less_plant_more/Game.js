@@ -1,22 +1,33 @@
-let score=0;
-let startScore;
-let timeSinceStart;
+let score = 0;
+let startScore; // Initial score
+let timeSinceStart = 0;
+let timeSinceRobotPressed = 0;
 let flowers = [];
 let gameStarted = false;
 let robotShown = false;
 let overlayAlpha = 220; //starting point for the overlay transparentsy
 let textBoxShown = false;
+let iconX = 30;
+let gameOver = false;
+
+let mailOpened = false;
+let mailRead = false;
 
 let displayedText = "";
 let charIndex = 0;
+
 
 class Game {
   contructor() {
   }
 
+
   startScreen() {
     if (gameStarted) { //Only runs when game has started
-   // logonSound.play();
+      if (overlayAlpha == 220) { // Only play once, at the very first frame of game start
+        logonSound.setVolume(0.5) // 50% Volume
+          logonSound.play();
+      }
       if (overlayAlpha > 0) { //If the overlay is higher than 0 keep fading
         overlayAlpha -= 2; //It's fading down with 4 every frame
       }
@@ -30,7 +41,7 @@ class Game {
 
     textAlign(CENTER);
 
-    if (!gameStarted) { //'!' means if the game is not started yet
+    if (!gameStarted) { // Only shows when game is not started
       textSize(50);
       text('TYPE LESS, PLANT MORE', width/2, 200);
       textSize(20);
@@ -56,6 +67,23 @@ class Game {
   show() {
     // Displays background image
     image(bliss, 0, 0, width, height);
+
+    // Displays darker sky overlay if score is high
+    for (let x = 0; x <= width; x++) {
+      let overlay = 0
+
+        if (score > 450) {
+        overlay = ((score / 800) * 200)-100;
+      }
+
+      let y = 340 + (-0.0000000001497 * Math.pow(x, 4))
+        + (0.0000006962403 * Math.pow(x, 3))
+        - (0.0008557573891 * Math.pow(x, 2))
+        + (0.2494275462201 * x);
+
+      fill(0, overlay);
+      rect(x, 0, 1, height-y);
+    }
 
     // Displays taskbar
     push();
@@ -88,7 +116,7 @@ class Game {
     stroke(1);
     textSize(14);
     textAlign(CENTER);
-    let iconX = 30;
+
 
     image(settings, iconX, 20, 60, 60);
     text('settings.exe', iconX+30, 90);
@@ -99,13 +127,111 @@ class Game {
     image(mail, iconX, 120, 60, 60);
     text('mail.exe', iconX+30, 190);
 
+    // Countdown for mail notification
+    if (timeSinceRobotPressed >= 20 && mailRead == false) {
+      if (timeSinceRobotPressed == 20) {
+        notificationSound.play();
+        timeSinceRobotPressed++;
+      }
+
+      push();
+      textAlign(CENTER, CENTER);
+
+      let dotX = 88;
+      let dotY = 140;
+      let dotSize = 20;
+
+      fill(255, 0, 0);
+      noStroke();
+      circle(dotX, dotY, dotSize);
+
+      fill(255);
+      textFont("Verdana");
+      text("1", dotX, dotY);
+
+      pop();
+    }
+
+    // Displays mailbox
+    if (mailOpened) {
+      push();
+
+      let boxX = 108;
+      let boxY = 115;
+      let boxW = 230;
+      let boxH = 265;
+
+      // Mail-window
+      fill(255);
+      stroke(0);
+      rect(boxX, boxY, boxW, boxH);
+
+      // Blue topbar
+      fill(50, 100, 200);
+      rect(boxX, boxY, boxW, 30);
+
+      fill(255);
+      noStroke();
+      textAlign(LEFT, CENTER);
+      text("Mail", boxX + 10, boxY + 15);
+
+      // Mail-info
+      fill(0);
+      textSize(12);
+      textAlign(LEFT, TOP);
+
+      text("From: noreply@doors.com", boxX+10, boxY+38);
+      text("To: you@pollutes.com", boxX+10, boxY+58);
+      text("Subject: Save the environment", boxX+10, boxY+78);
+
+      push();
+      // linje under subject
+      stroke(0);
+      line(boxX+10, boxY+103, boxX+boxW-10, boxY+103);
+      pop();
+
+      // The message
+      let message =
+        "Dear User,\n\nYou are ruining the environment with your dumb questions. "
+        + "If you want to keep using Fancy Bot, then you must plant flowers to compensate.\n\nBest of luck,";
+      text("Danish EPA", boxX+10, boxY+230);
+
+      // x, y, width, height
+      text(
+        message,
+        boxX+10,
+        boxY+110,
+        boxW-20,
+        boxH-80
+        );
+
+      textAlign(CENTER, CENTER);
+      rectMode(CENTER);
+      let rectX = 322;
+      let rectY = 130;
+      let rectSize = 20;
+
+      fill(255, 0, 0);
+      stroke(255);
+      strokeWeight(1);
+      rect(rectX, rectY, rectSize, rectSize, 5);
+
+      fill(255);
+      textFont("Verdana");
+      textSize(20);
+      noStroke();
+      text("x", rectX, rectY);
+
+      pop();
+    }
+
     image(photofolder, iconX, 220, 60, 60);
     text('scroll pictures', iconX+30, 290);
 
     image(audioplayer, iconX, 320, 60, 60);
     text('mediaplayer.exe', iconX+30, 390);
 
-    if (frameCount > 60*10 && robotShown == false) { // If user has not discovered the Robot program
+    if (timeSinceStart > 12 && robotShown == false && mailOpened == false) { // If user has not discovered the Robot program
       push();
       stroke(255);
       textSize(20);
@@ -124,15 +250,14 @@ class Game {
     }
 
     pop();
-
-
-
+    
     // Displays all flowers
+    flowers.sort((a, b) => b.y - a.y); // Sorts flowers by y-value, so the front flower is always displayed first
     for (let i = flowers.length - 1; i >= 0; i--) {
       flowers[i].show();
     }
 
-    if (frameCount % (60*8) == 0) { // Remove a random flower every 8 seconds
+    if (frameCount % (60*5) == 0) { // Removes a random flower every 5 seconds
       flowers.splice(floor(random(flowers.length)), 1);
     }
 
@@ -140,6 +265,7 @@ class Game {
       game.showRobot();
     }
   }
+  
 
   showRobot() {
 
@@ -184,7 +310,36 @@ class Game {
 
       pop();
     }
+
+    if (frameCount % 60 == 0) { // Adds one every second
+      timeSinceRobotPressed++;
+    }
   }
+  
+
+  gameOver () {
+
+    if (gameOver == false) {
+      gameOverSound.play();
+      gameOver = true;
+    }
+
+    push();
+    fill(0, 240);
+    rect(0, 0, width, height);
+
+    fill(255);
+
+    textAlign(CENTER);
+
+    textSize(50);
+    text('GAME OVER', width/2, 200);
+    textSize(20);
+    text('PRESS CTRL + R TO RESTART...', width/2, 2 * sin(frameCount * 0.05) + 600);
+
+    pop();
+  }
+  
 
   calculateScore() {
     // Calculates the current CO2 emissions
@@ -192,7 +347,7 @@ class Game {
 
       let currentScore = score;
 
-      currentScore = 0 - (flowers.length * 2.5); // C02 compensation based on the amount of flowers
+      currentScore = 0 - (flowers.length * 5); // C02 compensation based on the amount of flowers
 
       if (frameCount % 60 == 0) { // Adds one every second
         timeSinceStart++;
@@ -209,20 +364,43 @@ class Game {
       }
     }
   }
+  
 
   writeScore() {
     // Writes the current CO2 emissions
     push();
+    rectMode(RIGHT);
+    stroke(0);
+    strokeWeight(1);
+    fill(255, 120);
+    rect(350, 10, 400, 30);
+
+    noStroke();
+    if (score < 450) {
+      fill('#7BB662'); // Green
+      rect(351, 11, score/2, 28);
+    } else if (score >= 450 && score < 600) {
+      fill('#FFD301'); // Yellow
+      rect(351, 11, score/2, 28);
+    } else if (score >= 600 && score < 800) {
+      fill('#E03C32'); // Red
+      rect(351, 11, score/2, 28);
+    } else {
+      fill('#E03C32'); // Red
+      rect(351, 11, 398, 28);
+    }
 
     textAlign(CENTER);
-    textSize(36);
+    textSize(20);
     fill(255);
     stroke(1);
-    text("CO2 emissions: " + floor(score) + "g", width/2, 20);
+
+    text("CO2", 320, 22);
 
     pop();
   }
 }
+
 
 function sum (array) {
   let num = 0;
@@ -232,6 +410,28 @@ function sum (array) {
 
   return num;
 }
+
+
+function mousePressed() {
+  if (
+    mouseX > iconX &&
+    mouseX < iconX + 60 &&
+    mouseY > 120 &&
+    mouseY < 180
+    ) {
+    mailOpened = true;
+
+    mailRead = true;
+  }
+
+  if (
+    mouseX > 302 && mouseX < 342 &&
+    mouseY > 110 && mouseY < 150
+    ) {
+    mailOpened = false;
+  }
+}
+
 
 function typeWriter() {
   if (charIndex < textResult.length) {

@@ -12,6 +12,9 @@ let chat = new ChatWindow(600, 300);
 let particles = []; // Smoke particles array
 let flowersImg = []; // Array of different flowerheads
 let logonSound;
+let notificationSound;
+let plantSound = []; // Array of three different plant sounds
+let gameOverSound;
 
 
 function preload() {
@@ -24,9 +27,14 @@ function preload() {
   photofolder = loadImage('assets/photofolder.png');
   settings = loadImage('assets/settings.png');
   doors = loadImage('assets/doors.png');
-  
+
   // Loading all the soundeffects
-  //logonSound = loadSound('assets/Windows_XP_Logon_Sound.mp3');
+  logonSound = loadSound('assets/Windows_XP_Logon.mp3');
+  notificationSound = loadSound('assets/Windows_XP_Notification.mp3');
+  plantSound.push(loadSound('assets/plant1.mp3'));
+  plantSound.push(loadSound('assets/plant2.mp3'));
+  plantSound.push(loadSound('assets/plant3.mp3'));
+  gameOverSound = loadSound('assets/Windows_XP_Shutdown.mp3');
 
   // Loading in the text example for Markov Chains
   answers = loadStrings('/assets/answers.txt');
@@ -43,7 +51,7 @@ function preload() {
 }
 
 function setup() {
-  createCanvas(1024,768);
+  createCanvas(1024, 768);
   frameRate(60);
   noStroke();
   textFont(font);
@@ -72,45 +80,8 @@ function draw() {
   game.show();
   game.writeScore();
   game.startScreen();
+
+  if (score > 800) {
+    game.gameOver();
+  }
 }
-
-
-
-
-
-
-
-
-
-
-
-/*
-function generating() {
- //let time = Date.now();
- // let glow = 100 + 40 * sin(frameCount * 0.90); // Sin is used for pulsing
- console.log("Generating...");
- textSize(20);
- fill(250, 120);
- 
- //  let dots = frameCount
- let framesPassed = frameCount - startDotFrame;
- if (framesPassed < 25) {
- text("Generating", textX, textY);
- console.log("framesPassed :", framesPassed);
- }
- if (framesPassed > 25 && framesPassed < 50) {
- text("Generating.", textX, textY);
- console.log("framesPassed :", framesPassed);
- }
- if (framesPassed > 50 && framesPassed < 75) {
- text("Generating..", textX, textY);
- console.log("framesPassed :", framesPassed);
- }
- if (framesPassed > 75 && framesPassed < 100) {
- text("Generating...", textX, textY);
- console.log("framesPassed :", framesPassed);
- startDotFrame = frameCount;
- }
- console.log("frameCount :", frameCount);
- }
- */
